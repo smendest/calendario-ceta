@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 
+        <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital@1&display=swap" rel="stylesheet">
+    -->
+    <title>Calendario de Clases 2026</title>
+    <style>
+        :root {
+            --turquesa-suave: #E6F4F2;
+            --verde-azulado: #27A89A;
+            --rojo-suave: #e74c3ccc;
+            --rojo-sucio: #D96A5F;
+            --rojo-oscuro: #D36A60;
+            --sand: #FAF5E8;
+            --arena-media: #E3D3A8;
+            --arena-claro: #F1E9D6;
+            --arena-amarilla: #F4E8C1;
+            --pink-light: #ffcccc50;
+            --verde-musgo: #7a9b6f;
+            --verde: #71987d;
+            --verde-musgo-claro: #DDE7D8;
+            --arena-amarilla-plus: #F6E4A6;
+
+            --clase: var(--turquesa-suave);
+            --visits:var(--verde-azulado);
+            --weekend:var(--pink-light);
+            --empty: white;
+            --descanso:var(--arena-amarilla-plus);
+            --feriado:var(--rojo-oscuro);
+
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {  
+            /* font-family: 'Source Sans 3', sans-serif; */
+            font-family: Arial, sans-serif; 
+            line-height: 1.55;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #333;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: bold;
+            color: #4a90a4;
+        }
+
+        h1 {
+            font-size: 32px;
+            text-align: center;
+            flex-grow: 1;
+        }
+
+        .legend {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            width: 300px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .legend-color {
+            width: 30px;
+            height: 30px;
+            border-radius: 3px;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .month {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .month-header {
+            background-color: #f8f8f8;
+            padding: 12px;
+            font-weight: bold;
+            font-size: 18px;
+            text-align: center;
+            border-bottom: 2px solid #ddd;
+        }
+
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+        }
+
+        .day-header {
+            background-color: #e8e8e8;
+            padding: 8px 4px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 13px;
+            border: 1px solid #ddd;
+        }
+
+        .day {
+            padding: 12px 4px;
+            text-align: center;
+            /* border: 1px solid #ddd; */
+            border: 1px solid white;
+            min-height: 45px;
+            font-size: 15px;
+            position: relative;
+        }
+
+        .day.clase {
+            background-color: var(--clase);
+            border-color: white;
+            font-weight: bold;
+        }
+
+        .day.empty {
+            background-color: var(--empty);
+            font-weight: bold;
+        }
+
+        .day.weekend {
+            /* background-color: #f0f0f0; */
+            background-color: var(--weekend);
+            font-weight: bold;
+        }
+
+        .day.descanso {
+            /* background-color: #9B59B6CC; */
+            background-color: var(--descanso);
+            /* color: white; */
+            font-weight: bold;
+            border: 1px solid white;
+        }
+
+        .day.visits {
+            background-color: var(--visits);
+            color: white; 
+            font-weight: bold;
+        }
+
+        .day.feriado {
+            background-color: var(--feriado);
+            color: white;
+            font-weight: bold;
+        }
+
+        .visit-label {
+            font-size: 18px;
+            font-style: italic;
+            margin-top: 6px;
+        }
+
+
+        @media (max-width: 1200px) {
+            .grid-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+            
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                    <img src="logo.png" width="300" alt="logo">
+            </div>
+            <h1>CALENDARIO <br>DE CLASES 2026</h1>
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: var(--clase);"></div>
+                    <span>CLASES</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: var(--visits);"></div>
+                    <span>VISITAS EXTERNAS</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: var(--feriado);"></div>
+                    <span>FERIADOS</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: var(--descanso);"></div>
+                    <span>DESCANSO - VACACIONES</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="grid-container">
+            <!-- MARZO -->
+            <div class="month">
+                <div class="month-header">MARZO</div>
+                <div class="calendar">
+                    <div class="day-header">Lu</div>
+                    <div class="day-header">Ma</div>
+                    <div class="day-header">Mi</div>
+                    <div class="day-header">Ju</div>
+                    <div class="day-header">Vi</div>
+                    <div class="day-header">Sa</div>
+                    <div class="day-header">Do</div>
+                    <div class="day empty"></div>
+                    <div class="day empty"></div>
+                    <div class="day empty"></div>
+                    <div class="day empty"></div>
+                    <div class="day empty"></div>
+                    <div class="day empty"></div>
+                    <div class="day weekend">1</div>
+                    <div class="day weekend">2</div>
+                    <div class="day clase">3</div>
+                    <div class="day clase">4</div>
+                    <div class="day clase">5</div>
+                    <div class="day clase">6</div>
+                    <div class="day weekend">7</div>
+                    <div class="day weekend">8</div>
+                    <div class="day weekend">9</div>
+                    <div class="day clase">10</div>
+                    <div class="day clase">11</div>
+                    <div class="day clase">12</div>
+                    <div class="day clase">13</div>
+                    <div class="day weekend">14</div>
+                    <div class="day weekend">15</div>
+                    <div class="day weekend">16</div>
+                    <div class="day clase">17</div>
+                    <div class="day clase">18</div>
+                    <div class="day clase">19</div>
+                    <div class="day clase">20</div>
+                    <div class="day weekend">21</div>
+                    <div class="day weekend">22</div>
+                    <div class="day feriado">23</div>
+                    <div class="day feriado">24</div>
+                    <div class="day clase">25</div>
+                    <div class="day clase">26</div>
+                    <div class="day clase">27</div>
+                    <div class="day weekend">28</div>
+                    <div class="day weekend">29</div>
+                    <div class="day weekend">30</div>
+                    <div class="day clase">31</div>
+                </div>
+            </div>
+
+            <!-- ABRIL -->
+            <div class="month">
+                <div class="month-header">ABRIL</div>
+                <div class="calendar">
+                    <div class="day-header">Lu</div>
+                    <div class="day-header">Ma</div>
+                    <div class="day-header">Mi</div>
+                    <div class="day-header">Ju</div>
+                    <div class="day-header">Vi</div>
+                    <div class="day-header">Sa</div>
+                    <div class="day-header">Do</div>
+                    <div class="day empty"></div>
+                    <div class="day empty"></div>
+                    <div class="day clase">1</div>
+                    <div class="day feriado">2</div>
+                    <div class="day feriado">3</div>
+                    <div class="day weekend">4</div>
+                    <div class="day weekend">5</div>
+                    <div class="day weekend">6</div>
+                    <div class="day clase">7</div>
+                    <div class="day clase">8</div>
+                    <div class="day clase">9</div>
+                    <div class="day clase">10</div>
+                    <div class="day weekend">11</div>
+                    <div class="day weekend">12</div>
+                    <div class="day weekend">13</div>
+                    <div class="day descanso">14</div>
+                    <div class="day descanso">15</div>
+                    <div class="day descanso">16</div>
+                    <div class="day descanso">17</div>
+                    <div class="day weekend">18</div>
+                    <div class="day weekend">19</div>
+                    <div class="day weekend">20</div>
+                    <div class="day clase">21</div>
+                    <div class="day clase">22</div>
+                    <div class="day clase">23</div>
+                    <div class="day visits">24</div>
+                    <div class="day weekend">25</div>
+                    <div class="day weekend">26</div>
+                    <div class="day weekend">27</div>
+                    <div class="day clase">28</div>
+                    <div class="day clase">29</div>
+                    <div class="day clase">30</div>
+                </div>
+                <p class="visit-label">Viernes 24: Luc Vanier</p>
+            </div>
+
+            <!-- MAYO -->
+            <div class="month">
+                <div class="month-header">MAYO</div>
+                <div class="calendar">
+                    <div class="day-header">Lu</div>
+                    <div class="day-header">Ma</div>
+                    <div class="day-header">Mi</div>
+                    <div class="day-header">Ju</div>
+                    <div class="day-header">Vi</div>
+                    <div class="day-header">Sa</div>
+                    <div class="day-header">Do</div>
+                    <div class="day empty"></div>
+                    <div class="day empty"></div>
+                    <div class="day empty"></div>
+                    <div class="day empty"></div>
+                    <div class="day feriado">1</div>
+                    <div class="day weekend">2</div>
+                    <div class="day weekend">3</div>
+                    <div class="day weekend">4</div>
+                    <div class="day clase">5</div>
+                    <div class="day clase">6</div>
+                    <div class="day clase">7</div>
+                    <div class="day clase">8</div>
+                    <div class="day weekend">9</div>
+                    <div class="day weekend">10</div>
+                    <div class="day weekend">11</div>
+                    <div class="day clase">12</div>
+                    <div class="day clase">13</div>
+                    <div class="day clase">14</div>
+                    <div class="day clase">15</div>
+                    <div class="day weekend">16</div>
+                    <div class="day weekend">17</div>
+                    <div class="day weekend">18</div>
+                    <div class="day clase">19</div>
+                    <div class="day clase">20</div>
+                    <div class="day clase">21</div>
+                    <div class="day clase">22</div>
+                    <div class="day weekend">23</div>
+                    <div class="day weekend">24</div>
+                    <div class="day feriado">25</div>
+                    <div class="day clase">26</div>
+                    <div class="day clase">27</div>
+                    <div class="day clase">28</div>
+                    <div class="day clase">29</div>
+                </div>
+            </div>
+
+            <!-- JUNIO -->
+            <div class="month">
+                <div class="month-header">JUNIO</div>
+                <div class="calendar">
+                    <div class="day-header">Lu</div>
+                    <div class="day-header">Ma</div>
+                    <div class="day-header">Mi</div>
+                    <div class="day-header">Ju</div>
+                    <div class="day-header">Vi</div>
+                    <div class="day-header">Sa</div>
+                    <div class="day-header">Do</div>
+                    <div class="day weekend">1</div>
+                    <div class="day descanso">2</div>
+                    <div class="day descanso">3</div>
+                    <div class="day descanso">4</div>
+                    <div class="day descanso">5</div>
+                    <div class="day weekend">6</div>
+                    <div class="day weekend">7</div>
+                    <div class="day weekend">8</div>
+                    <div class="day clase">9</div>
+                    <div class="day clase">10</div>
+                    <div class="day clase">11</div>
+                    <div class="day clase">12</div>
+                    <div class="day weekend">13</div>
+                    <div class="day weekend">14</div>
+                    <div class="day weekend">15</div>
+                    <div class="day clase">16</div>
+                    <div class="day clase">17</div>
+                    <div class="day clase">18</div>
+                    <div class="day clase">19</div>
+                    <div class="day feriado">20</div>
+                    <div class="day weekend">21</div>
+                    <div class="day weekend">22</div>
+                    <div class="day clase">23</div>
+                    <div class="day clase">24</div>
+                    <div class="day clase">25</div>
+                    <div class="day clase">26</div>
+                    <div class="day weekend">27</div>
+                    <div class="day weekend">28</div>
+                    <div class="day weekend">29</div>
+                    <div class="day clase">30</div>
+                </div>
+            </div>
+
+            <!-- JULIO -->
+            <div class="month">
+                <div class="month-header">JULIO</div>
+                <div class="calendar">
+                    <div class="day-header">Lu</div>
+                    <div class="day-header">Ma</div>
+                    <div class="day-header">Mi</div>
+                    <div class="day-header">Ju</div>
+                    <div class="day-header">Vi</div>
+                    <div class="day-header">Sa</div>
+                    <div class="day-header">Do</div>
+                    <div class="day empty"></div>
+                    <div class="day empty"></div>
+                    <div class="day clase">1</div>
+                    <div class="day clase">2</div>
+                    <div class="day clase">3</div>
+                    <div class="day weekend">4</div>
+                    <div class="day weekend">5</div>
+                    <div class="day weekend">6</div>
+                    <div class="day clase">7</div>
+                    <div class="day clase">8</div>
+                    <div class="day feriado">9</div>
+                    <div class="day clase">10</div>
+                    <div class="day weekend">11</div>
+                    <div class="day weekend">12</div>
+                    <div class="day weekend">13</div>
+                    <div class="day clase">14</div>
+                    <div class="day clase">15</div>
+                    <div class="day clase">16</div>
+                    <div class="day clase">17</div>
+                    <div class="day weekend">18</div>
+                    <div class="day weekend">19</div>
+                    <div class="day weekend">20</div>
+                    <div class="day descanso">21</div>
+                    <div class="day descanso">22</div>
+                    <div class="day descanso">23</div>
+                    <div class="day descanso">24</div>
+                    <div class="day weekend">25</div>
+                    <div class="day weekend">26</div>
+                    <div class="day weekend">27</div>
+                    <div class="day clase">28</div>
+                    <div class="day clase">29</div>
+                    <div class="day clase">30</div>
+                    <div class="day clase">31</div>
+                </div>
+            </div>
+            <!-- AGOSTO -->
+            <div class="month">
+                <div class="month-header">AGOSTO</div>
+                <div class="calendar">
+                    <div class="day-header">Lu</div>
+                    <div class="day-header">Ma</div>
+                    <div class="day-header">Mi</div>
+                    <div class="day-header">Ju</div>
+                    <div class="day-header">Vi</div>
+                    <div class="day-header">Sa</div>
+                    <div class="day-header">Do</div>
+                    <div class="day empty"></div>
+                    <div class="day empty"></div>
+                    <div class="day empty"></div>
+                    <div class="day empty"></div>
+                    <div class="day empty"></div>
+                    <div class="day weekend">1</div>
+                    <div class="day weekend">2</div>
+                    <div class="day weekend">3</div>
+                    <div class="day clase">4</div>
+                    <div class="day clase">5</div>
+                    <div class="day clase">6</div>
+                    <div class="day visits">7</div>
+                    <div class="day weekend">8</div>
+                    <div class="day weekend">9</div>
+                    <div class="day weekend">10</div>
+                    <div class="day clase">11</div>
+                    <div class="day clase">12</div>
+                    <div class="day clase">13</div>
+                    <div class="day clase">14</div>
+                    <div class="day weekend">15</div>
+                    <div class="day weekend">16</div>
+                    <div class="day feriado">17</div>
+                    <div class="day clase">18</div>
+                    <div class="day clase">19</div>
+                    <div class="day clase">20</div>
+                    <div class="day clase">21</div>
+                    <div class="day weekend">22</div>
+                    <div class="day weekend">23</div>
+                    <div class="day weekend">24</div>
+                    <div class="day clase">25</div>
+                    <div class="day clase">26</div>
+                    <div class="day visits">27</div>
+                    <div class="day visits">28</div>
+                    <div class="day weekend">29</div>
+                    <div class="day weekend">30</div>
+                    <div class="day weekend">31</div>
+                </div>
+                <p class="visit-label">Viernes 7: Mariana Di Paula</p>
+                <p class="visit-label">Jueves 27 y Viernes 28: Merran Poplar</p>
+            </div>
+
+            <!-- SEPTIEMBRE -->
+            <div class="month">
+                <div class="month-header">SEPTIEMBRE</div>
+                <div class="calendar">
+                    <div class="day-header">Lu</div>
+                    <div class="day-header">Ma</div>
+                    <div class="day-header">Mi</div>
+                    <div class="day-header">Ju</div>
+                    <div class="day-header">Vi</div>
+                    <div class="day-header">Sa</div>
+                    <div class="day-header">Do</div>
+                    <div class="day empty"></div>
+                    <div class="day clase">1</div>
+                    <div class="day clase">2</div>
+                    <div class="day clase">3</div>
+                    <div class="day clase">4</div>
+                    <div class="day weekend">5</div>
+                    <div class="day weekend">6</div>
+                    <div class="day weekend">7</div>
+                    <div class="day clase">8</div>
+                    <div class="day clase">9</div>
+                    <div class="day clase">10</div>
+                    <div class="day clase">11</div>
+                    <div class="day weekend">12</div>
+                    <div class="day weekend">13</div>
+                    <div class="day weekend">14</div>
+                    <div class="day descanso">15</div>
+                    <div class="day descanso">16</div>
+                    <div class="day descanso">17</div>
+                    <div class="day descanso">18</div>
+                    <div class="day weekend">19</div>
+                    <div class="day weekend">20</div>
+                    <div class="day weekend">21</div>
+                    <div class="day clase">22</div>
+                    <div class="day clase">23</div>
+                    <div class="day clase">24</div>
+                    <div class="day visits">25</div>
+                    <div class="day weekend">26</div>
+                    <div class="day weekend">27</div>
+                    <div class="day weekend">28</div>
+                    <div class="day clase">29</div>
+                    <div class="day clase">30</div>
+                </div>
+                <p class="visit-label">Viernes 25: Robyn Avalon</p>
+            </div>
+            <!-- OCTUBRE -->
+            <div class="month">
+                <div class="month-header">OCTUBRE</div>
+                <div class="calendar">
+                    <div class="day-header">Lu</div>
+                    <div class="day-header">Ma</div>
+                    <div class="day-header">Mi</div>
+                    <div class="day-header">Ju</div>
+                    <div class="day-header">Vi</div>
+                    <div class="day-header">Sa</div>
+                    <div class="day-header">Do</div>
+                    <div class="day empty"></div>
+                    <div class="day empty"></div>
+                    <div class="day empty"></div>
+                    <div class="day empty"></div>
+                    <div class="day empty"></div>
+                    <div class="day weekend">1</div>
+                    <div class="day weekend">2</div>
+                    <div class="day clase">3</div>
+                    <div class="day clase">4</div>
+                    <div class="day weekend">5</div>
+                    <div class="day clase">6</div>
+                    <div class="day clase">7</div>
+                    <div class="day weekend">8</div>
+                    <div class="day weekend">9</div>
+                    <div class="day clase">10</div>
+                    <div class="day clase">11</div>
+                    <div class="day feriado">12</div>
+                    <div class="day feriado">13</div>
+                    <div class="day clase">14</div>
+                    <div class="day weekend">15</div>
+                    <div class="day weekend">16</div>
+                    <div class="day clase">17</div>
+                    <div class="day clase">18</div>
+                    <div class="day clase">19</div>
+                    <div class="day clase">20</div>
+                    <div class="day clase">21</div>
+                    <div class="day weekend">22</div>
+                    <div class="day weekend">23</div>
+                    <div class="day clase">24</div>
+                    <div class="day clase">25</div>
+                    <div class="day clase">26</div>
+                    <div class="day clase">27</div>
+                    <div class="day clase">28</div>
+                    <div class="day weekend">29</div>
+                    <div class="day weekend">30</div>
+                    <div class="day clase">31</div>
+                </div>
+            </div>
+
+            <!-- NOVIEMBRE -->
+            <div class="month">
+                <div class="month-header">NOVIEMBRE</div>
+                <div class="calendar">
+                    <div class="day-header">Lu</div>
+                    <div class="day-header">Ma</div>
+                    <div class="day-header">Mi</div>
+                    <div class="day-header">Ju</div>
+                    <div class="day-header">Vi</div>
+                    <div class="day-header">Sa</div>
+                    <div class="day-header">Do</div>
+                    <div class="day empty"></div>
+                    <div class="day empty"></div>
+                    <div class="day empty"></div>
+                    <div class="day empty"></div>
+                    <div class="day empty"></div>
+                    <div class="day empty"></div>
+                    <div class="day weekend">1</div>
+                    <div class="day weekend">2</div>
+                    <div class="day descanso">3</div>
+                    <div class="day descanso">4</div>
+                    <div class="day descanso">5</div>
+                    <div class="day descanso">6</div>
+                    <div class="day weekend">7</div>
+                    <div class="day weekend">8</div>
+                    <div class="day weekend">9</div>
+                    <div class="day clase">10</div>
+                    <div class="day clase">11</div>
+                    <div class="day clase">12</div>
+                    <div class="day clase">13</div>
+                    <div class="day weekend">14</div>
+                    <div class="day weekend">15</div>
+                    <div class="day weekend">16</div>
+                    <div class="day clase">17</div>
+                    <div class="day clase">18</div>
+                    <div class="day clase">19</div>
+                    <div class="day clase">20</div>
+                    <div class="day weekend">21</div>
+                    <div class="day weekend">22</div>
+                    <div class="day feriado">23</div>
+                    <div class="day clase">24</div>
+                    <div class="day clase">25</div>
+                    <div class="day clase">26</div>
+                    <div class="day clase">27</div>
+                    <div class="day weekend">28</div>
+                    <div class="day weekend">29</div>
+                    <div class="day weekend">30</div>
+                </div>
+            </div>
+
+            <!-- DICIEMBRE -->
+            <div class="month">
+                <div class="month-header">DICIEMBRE</div>
+                <div class="calendar">
+                    <div class="day-header">Lu</div>
+                    <div class="day-header">Ma</div>
+                    <div class="day-header">Mi</div>
+                    <div class="day-header">Ju</div>
+                    <div class="day-header">Vi</div>
+                    <div class="day-header">Sa</div>
+                    <div class="day-header">Do</div>
+                    <div class="day empty"></div>
+                    <div class="day empty"></div>
+                    <div class="day visits">1</div>
+                    <div class="day clase">2</div>
+                    <div class="day clase">3</div>
+                    <div class="day weekend">4</div>
+                    <div class="day weekend">5</div>
+                    <div class="day clase">6</div>
+                    <div class="day clase">7</div>
+                    <div class="day feriado">8</div>
+                    <div class="day clase">9</div>
+                    <div class="day clase">10</div>
+                    <div class="day weekend">11</div>
+                    <div class="day weekend">12</div>
+                    <div class="day weekend">13</div>
+                    <div class="day descanso">14</div>
+                    <div class="day descanso">15</div>
+                    <div class="day descanso">16</div>
+                    <div class="day descanso">17</div>
+                    <div class="day weekend">18</div>
+                    <div class="day weekend">19</div>
+                    <div class="day weekend">20</div>
+                    <div class="day descanso">21</div>
+                    <div class="day descanso">22</div>
+                    <div class="day descanso">23</div>
+                    <div class="day descanso">24</div>
+                    <div class="day weekend">25</div>
+                    <div class="day weekend">26</div>
+                    <div class="day weekend">27</div>
+                    <div class="day descanso">28</div>
+                    <div class="day descanso">29</div>
+                    <div class="day descanso">30</div>
+                    <div class="day descanso">31</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
